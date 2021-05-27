@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-analytics.js"></script>
+    <title>Document</title>
+</head>
+<style>
+body{
+    display: flex;
+    min-height: 100vh;
+    width:100;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#uploader{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50%;
+    margin-bottom: 10px;
+}
+</style>
+<body>
+<progress value="0" max="100" id="uploader"></progress> 
+<input type="file" name="" value="upload" id="filebutton">  
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAkKik8bjU8eeqNH565CG0Vsk1C-mClxtc",
+    authDomain: "cafe-9d2e6.firebaseapp.com",
+    projectId: "cafe-9d2e6",
+    storageBucket: "cafe-9d2e6.appspot.com",
+    messagingSenderId: "208393462885",
+    appId: "1:208393462885:web:8421682ca0550368d2528c",
+    measurementId: "G-H2YRCXEZ80"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  var filebutton=document.getElementById('filebutton');
+  var uploader =document.getElementById('uploader')
+  filebutton.addEventListener('change', function(e){
+
+ 
+  //get file
+  var file =e.target.files[0];
+  //create a storage ref
+  var storageRef= firebase.storage().ref('doc/'+file.name);
+  //upload
+  var task=storageRef.put(file)
+ //update progress bar
+ task.on('state_changed',function progress(snapshot) {
+  var percentage=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
+  uploader.value=percentage; 
+  console.log(percentage);
+ },
+ function error(err) {
+   
+ },
+ function complete() {
+   
+ })
+ 
+})
+</script>
+</body>
+</html>
